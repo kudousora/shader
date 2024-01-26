@@ -28,6 +28,7 @@ class Fbx
 	struct MATERIAL
 	{
 		Texture* pTexture;
+		Texture* pNormalmap;
 		XMFLOAT4 diffuse;
 		XMFLOAT4 ambiemt;
 		XMFLOAT4 specular;
@@ -44,6 +45,7 @@ class Fbx
 		XMFLOAT4	specularColor;
 		FLOAT		shininess;
 		BOOL		isTextured;
+		BOOL		hasNormalMap;
 	};
 
 	struct VERTEX
@@ -51,6 +53,7 @@ class Fbx
 		XMVECTOR position;//位置
 		XMVECTOR uv; //テクスチャ座標
 		XMVECTOR normal; //法線ベクトル
+		XMVECTOR tangent; //接線ベクトル
 	};
 
 	int vertexCount_;	//頂点数

@@ -100,6 +100,23 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 			vertices[index].normal = XMVectorSet((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
 		}
 	}
+	FbxGeometryElementTangent* t = mesh->GetElementTangent(0);
+	//タンジェントの取得
+	for (int i = 0; i < polygonCount_; i++)
+	{
+		int startIndex = mesh->GetPolygonVertexIndex(i);
+		
+		FbxVector4 tangent{ 0,0,0,0 };
+		if (t)
+		{
+			tangent = t->GetDirectArray().GetAt(startIndex).mData;
+		}
+		for (int j = 0; j < 3; j++)
+		{
+			int index = mesh->GetPolygonVertices()[startIndex + j];
+			vertices[index].tangent = XMVectorSet((float)tangent[0], (float)tangent[1], (float)tangent[2], 0.0);
+		}
+	}
 
 	//頂点バッファ
 	HRESULT hr;
@@ -258,12 +275,17 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 			pMaterialList_[i].pTexture = nullptr;
 			//マテリアルの色
 		}
+		//ノーマルテクスチャ
+		{
+		
+		}
 	}
 }
 
 void Fbx::Draw(Transform& transform)
 {
-	Direct3D::SetShader(SHADER_OUTLINE);
+	Direct3D::SetShader(SHADER_NORMALMAP);
+	//Direct3D::SetShader(SHADER_OUTLINE);
 
 	transform.Calclation();//トランスフォームを計算
 	for (int j = 0; j < 2; j++) {
@@ -283,6 +305,7 @@ void Fbx::Draw(Transform& transform)
 			cb.shininess = pMaterialList_[i].shininess;
 
 			cb.isTextured = pMaterialList_[i].pTexture != nullptr;
+			cb.hasNormalMap = pMaterialList_[i].pNormalmap != nullptr;
 
 			Direct3D::pContext_->UpdateSubresource(pConstantBuffer_, 0, NULL, &cb, 0, 0);
 
