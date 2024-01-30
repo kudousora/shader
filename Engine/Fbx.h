@@ -28,7 +28,7 @@ class Fbx
 	struct MATERIAL
 	{
 		Texture* pTexture;
-		Texture* pNormalmap;
+		Texture* pNormalTexure;
 		XMFLOAT4 diffuse;
 		XMFLOAT4 ambiemt;
 		XMFLOAT4 specular;
@@ -44,7 +44,7 @@ class Fbx
 		XMFLOAT4	ambientColor;
 		XMFLOAT4	specularColor;
 		FLOAT		shininess;
-		BOOL		isTextured;
+		BOOL		hasTextured;
 		BOOL		hasNormalMap;
 	};
 
