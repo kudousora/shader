@@ -3,7 +3,7 @@
 #include "Engine/Fbx.h"
 
 axisClass::axisClass(GameObject* parent)
-	:GameObject(parent, "AXIS"), hModel_(-1)
+    :GameObject(parent, "AXIS"), hModel_(-1)
 {
 
 }
@@ -14,14 +14,14 @@ axisClass::~axisClass()
 
 void axisClass::Initialize()
 {
-    hModel_ = Model::Load("Assets/Arrow.fbx");
-    assert(hModel_ >= 0);//モデル番号が-1のままだったらあさーとに引っかかる
+    // hModel_ = Model::Load("Assets/Arrow.fbx");
+     //assert(hModel_ >= 0);//モデル番号が-1のままだったらあさーとに引っかかる
 
-    //transform_.scale_.x = 0.1f;
-    //transform_.scale_.y = 0.1f;
-    //transform_.scale_.z = 0.1f;
-    //transform_.position_.x = 2.0f;
-    //transform_.position_.y = 1.0f;
+     //transform_.scale_.x = 0.1f;
+     //transform_.scale_.y = 0.1f;
+     //transform_.scale_.z = 0.1f;
+     //transform_.position_.x = 2.0f;
+     //transform_.position_.y = 1.0f;
 }
 
 void axisClass::Update()
@@ -37,12 +37,12 @@ void axisClass::Draw()
     yt.scale_ = { 0.5,0.5,0.5 };
     zt.rotate_.y = -90;
     zt.scale_ = { 0.5,0.5,0.5 };
-    Model::SetTransform(hModel_, xt);
+    /*Model::SetTransform(hModel_, xt);
     Model::Draw(hModel_);
     Model::SetTransform(hModel_, yt);
     Model::Draw(hModel_);
     Model::SetTransform(hModel_, zt);
-    Model::Draw(hModel_);
+    Model::Draw(hModel_);*/
 }
 
 void axisClass::Release()
