@@ -279,7 +279,7 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		//ノーマルテクスチャ
 		{
 			//テクスチャ情報
-			FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sBump);
+			FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sNormalMap);
 
 			//テクスチャの数数
 			int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();
@@ -317,7 +317,7 @@ void Fbx::Draw(Transform& transform)
 	//Direct3D::SetShader(SHADER_OUTLINE);
 
 	transform.Calclation();//トランスフォームを計算
-	
+	for (int j = 0; j < 2; j++) {
 
 		for (int i = 0; i < materialCount_; i++)
 		{
@@ -333,7 +333,7 @@ void Fbx::Draw(Transform& transform)
 			cb.specularColor = pMaterialList_[i].specular;
 			cb.shininess = pMaterialList_[i].shininess;
 
-			cb.hasTexture = pMaterialList_[i].pTexture != nullptr;
+			cb.hasTextured = pMaterialList_[i].pTexture != nullptr;
 			cb.hasNormalMap = pMaterialList_[i].pNormalTexure != nullptr;
 
 			Direct3D::pContext_->UpdateSubresource(pConstantBuffer_, 0, NULL, &cb, 0, 0);
@@ -367,18 +367,18 @@ void Fbx::Draw(Transform& transform)
 			if (pMaterialList_[i].pNormalTexure)
 			{
 				ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
-				Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRV);
+				Direct3D::pContext_->PSSetShaderResources(2, 1, &pSRV);
 			}
 
-			/*ID3D11ShaderResourceView* pSRVToon = pToonTex_->GetSRV();
-			Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRVToon);*/
+			ID3D11ShaderResourceView* pSRVToon = pToonTex_->GetSRV();
+			Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRVToon);
 
 
 			//描画
 			Direct3D::pContext_->DrawIndexed(indexCount_[i], 0, 0);
 		}
-		//Direct3D::SetShader(SHADER_TOON);
-	
+		Direct3D::SetShader(SHADER_TOON);
+	}
 
 
 }

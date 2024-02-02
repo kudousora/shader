@@ -37,15 +37,14 @@ class Fbx
 
 	struct CBUFF_MODEL
 	{
-		
-		XMMATRIX	matW;//wvp
 		XMMATRIX	matWVP;//wvp
+		XMMATRIX	matW;//wvp
 		XMMATRIX	matNormal;//ÉèÅ[ÉãÉhïœä∑ÇæÇØÇÃÇ‚Ç¬
 		XMFLOAT4	diffuseColor;
 		XMFLOAT4	ambientColor;
 		XMFLOAT4	specularColor;
 		FLOAT		shininess;
-		BOOL		hasTexture;
+		BOOL		hasTextured;
 		BOOL		hasNormalMap;
 	};
 

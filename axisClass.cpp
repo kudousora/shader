@@ -14,8 +14,8 @@ axisClass::~axisClass()
 
 void axisClass::Initialize()
 {
-   // hModel_ = Model::Load("Assets/Arrow.fbx");
-    //assert(hModel_ >= 0);//モデル番号が-1のままだったらあさーとに引っかかる
+    hModel_ = Model::Load("Assets/Arrow.fbx");
+    assert(hModel_ >= 0);//モデル番号が-1のままだったらあさーとに引っかかる
 
     //transform_.scale_.x = 0.1f;
     //transform_.scale_.y = 0.1f;
@@ -37,12 +37,12 @@ void axisClass::Draw()
     yt.scale_ = { 0.5,0.5,0.5 };
     zt.rotate_.y = -90;
     zt.scale_ = { 0.5,0.5,0.5 };
-    /*Model::SetTransform(hModel_, xt);
+    Model::SetTransform(hModel_, xt);
     Model::Draw(hModel_);
     Model::SetTransform(hModel_, yt);
     Model::Draw(hModel_);
     Model::SetTransform(hModel_, zt);
-    Model::Draw(hModel_);*/
+    Model::Draw(hModel_);
 }
 
 void axisClass::Release()
