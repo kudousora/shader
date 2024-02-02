@@ -17,8 +17,6 @@ enum SHADER_TYPE
 	SHADER_2D,
 	SHADER_3D,
 	SHADER_POINT,
-	SHADER_TOON,
-	SHADER_OUTLINE,
 	SHADER_NORMALMAP,
 	SHADER_MAX,
 };
@@ -36,10 +34,9 @@ namespace Direct3D
 	HRESULT InitShader();
 	HRESULT InitShader3D();
 	HRESULT InitShader2D();
-	HRESULT InitToonShade();
-	HRESULT InitToonOutline();
+	HRESULT InitShaderNormalMap();
 	HRESULT InitShaderPointLight();
-	HRESULT InitNormalMap();
+
 
 	void SetShader(SHADER_TYPE type);
 
@@ -51,4 +48,9 @@ namespace Direct3D
 
 	//解放
 	void Release();
+
+	//Zバッファへの書き込みON/OFF
+	//引数：isWrite	  true=書き込みON／false=書き込みOFF
+	void SetDepthBafferWriteEnable(bool isWrite);
+	extern SIZE screenSize;
 };

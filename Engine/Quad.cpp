@@ -14,8 +14,6 @@ Quad::~Quad()
 
 HRESULT Quad::Initialize()
 {
-
-
 	InitVertexData();
 	if (FAILED(CreateVertexBuffer()))
 	{

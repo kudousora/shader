@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/Quad.h"
+#include "Engine/Sprite.h"
 
 
 struct CBUFF_STAGESCENE
@@ -16,11 +17,12 @@ class Stage : public GameObject
     int hModel_;    //ÉÇÉfÉãî‘çÜ
     int hGround_;
     int hLightBall_;
+
     Transform trDonuts;
     Transform trGround;
     Transform trLightBall;
     ID3D11Buffer* pCBStageScene_;
-    //Quad* q;
+    Sprite* sprite_;
     void IntConstantBuffer();
     XMFLOAT4	lightSourcePosition_;
 public:

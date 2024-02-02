@@ -37,8 +37,8 @@ class Fbx
 
 	struct CBUFF_MODEL
 	{
-		XMMATRIX	matW;//wvp
 		XMMATRIX	matWVP;//wvp
+		XMMATRIX	matW;//wvp
 		XMMATRIX	matNormal;//ƒ[ƒ‹ƒh•ÏŠ·‚¾‚¯‚Ì‚â‚Â
 		XMFLOAT4	diffuseColor;
 		XMFLOAT4	ambientColor;

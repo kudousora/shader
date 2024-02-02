@@ -7,7 +7,7 @@
 using namespace DirectX;
 using namespace Camera;
 
-const XMFLOAT4 LIGHT_POSITION{ 1, 2, 1, 0 };
+//const XMFLOAT4 LIGHT_POSITION{ 1, 2, 1, 0 };
 
 Fbx::Fbx()
 	:vertexCount_(0), polygonCount_(0), materialCount_(0),
@@ -59,13 +59,9 @@ HRESULT Fbx::Load(std::string fileName)
 	//カレントディレクトリを元に戻す
 	SetCurrentDirectory(defaultCurrentDir);
 
+
 	//マネージャ解放
 	pFbxManager->Destroy();
-
-	pToonTex_ = new Texture;
-	pToonTex_->Load("Assets\\toon2.png");
-
-
 	return S_OK;
 }
 
@@ -76,7 +72,7 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 	VERTEX* vertices = new VERTEX[vertexCount_];
 
 	//全ポリゴン
-	for (DWORD poly = 0; poly < polygonCount_; poly++)
+	for (DWORD poly = 0; poly < (unsigned int)polygonCount_; poly++)
 	{
 		//3頂点分
 		for (int vertex = 0; vertex < 3; vertex++)
@@ -100,23 +96,24 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 			vertices[index].normal = XMVectorSet((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
 		}
 	}
+
 	FbxGeometryElementTangent* t = mesh->GetElementTangent(0);
-	//タンジェントの取得
+	//タンジェント取得
 	for (int i = 0; i < polygonCount_; i++)
 	{
-		int startIndex = mesh->GetPolygonVertexIndex(i);
-		
 		FbxVector4 tangent{ 0,0,0,0 };
-		if (t)
-		{
+		int startIndex = mesh->GetPolygonVertexIndex(i);
+		if (t) {
 			tangent = t->GetDirectArray().GetAt(startIndex).mData;
 		}
+
 		for (int j = 0; j < 3; j++)
 		{
 			int index = mesh->GetPolygonVertices()[startIndex + j];
-			vertices[index].tangent = XMVectorSet((float)tangent[0], (float)tangent[1], (float)tangent[2], 0.0);
+			vertices[index].tangent = XMVectorSet((float)tangent[0], (float)tangent[1], (float)tangent[2], 0.0f);
 		}
 	}
+
 
 	//頂点バッファ
 	HRESULT hr;
@@ -153,7 +150,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* mesh)
 	{
 		int count = 0;
 		//全ポリゴン
-		for (DWORD poly = 0; poly < polygonCount_; poly++)
+		for (DWORD poly = 0; poly < (unsigned int)polygonCount_; poly++)
 		{
 			//あるマテリアルを持ったポリゴンのリストをとってきて、頂点をリストアップ
 			FbxLayerElementMaterial* mtl = mesh->GetLayer(0)->GetMaterials();
@@ -244,7 +241,7 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		}
 
 
-		//通常テクスチャ
+
 		{
 			//テクスチャ情報
 			FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -313,9 +310,11 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 
 void Fbx::Draw(Transform& transform)
 {
-	Direct3D::SetShader(SHADER_NORMALMAP);
-	//Direct3D::SetShader(SHADER_OUTLINE);
-
+	if (state_ == RENDER_DIRLIGHT)
+		Direct3D::SetShader(SHADER_NORMALMAP);
+	else
+		Direct3D::SetShader(SHADER_3D);
+	//Direct3D::SetShader(SHADER_NORMALMAP);
 	transform.Calclation();//トランスフォームを計算
 
 
@@ -333,8 +332,10 @@ void Fbx::Draw(Transform& transform)
 		cb.specularColor = pMaterialList_[i].specular;
 		cb.shininess = pMaterialList_[i].shininess;
 
+
 		cb.hasTexture = pMaterialList_[i].pTexture != nullptr;
 		cb.hasNormalMap = pMaterialList_[i].pNormalTexure != nullptr;
+
 
 		Direct3D::pContext_->UpdateSubresource(pConstantBuffer_, 0, NULL, &cb, 0, 0);
 
@@ -364,24 +365,19 @@ void Fbx::Draw(Transform& transform)
 			Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
 		}
 
+
 		if (pMaterialList_[i].pNormalTexure)
 		{
-			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pTexture->GetSRV();
+			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pNormalTexure->GetSRV();
 			Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRV);
 		}
-
-		/*ID3D11ShaderResourceView* pSRVToon = pToonTex_->GetSRV();
-		Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRVToon);*/
 
 
 		//描画
 		Direct3D::pContext_->DrawIndexed(indexCount_[i], 0, 0);
 	}
-	//Direct3D::SetShader(SHADER_TOON);
-
-
-
 }
 
 void Fbx::Release()
 {}
+

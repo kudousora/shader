@@ -155,6 +155,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="transOBJ.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="NormalMapping.hlsl">
@@ -222,6 +223,7 @@
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="transOBJ.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

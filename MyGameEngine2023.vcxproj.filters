@@ -71,6 +71,9 @@
     <ClCompile Include="axisClass.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="transOBJ.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl" />
@@ -129,6 +132,7 @@
     <ClInclude Include="axisClass.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
+    <ClInclude Include="transOBJ.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
